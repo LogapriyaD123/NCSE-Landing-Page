@@ -1,56 +1,78 @@
 import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { associationInfo } from '../data';
+
+const lineVariants = {
+    hidden: { opacity: 0, y: 24 },
+    show: { opacity: 1, y: 0 },
+};
 
 const Hero = () => {
     return (
-        <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-radial-at-tl bg-gradient-radial-at-br">
-            {/* Background decoration */}
-            <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-500/15 rounded-full blur-[100px] z-0" />
-            <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-500/15 rounded-full blur-[100px] z-0" />
+        <section className="relative min-h-screen flex items-center overflow-hidden bg-background grid-bg pt-28">
+            <div className="absolute inset-x-0 top-0 h-80 bg-[radial-gradient(circle_at_top,rgba(212,160,23,0.06),transparent_62%)] pointer-events-none" />
+            <div className="absolute inset-x-0 top-1/2 h-px bg-accent/20 pointer-events-none" />
+            <div className="absolute left-1/2 top-[18%] h-[62%] w-px bg-border/40 pointer-events-none" />
 
             <div className="container relative z-10 text-center">
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
+                    initial="hidden"
+                    animate="show"
+                    variants={{
+                        hidden: {},
+                        show: { transition: { staggerChildren: 0.1 } },
+                    }}
+                    className="max-w-5xl mx-auto"
                 >
-                    <span className="inline-block px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-400 font-semibold text-sm mb-6">
-                        Welcome to NCSE
-                    </span>
-                    <h1 className="mb-6">
-                        <span className="gradient-text">Association Name</span><br />
-                        <span className="text-[0.8em] text-slate-100">College Name</span>
-                    </h1>
-                    <p className="max-w-2xl mx-auto mb-10 text-xl md:text-2xl">
-                        "Innovating for a tech-driven tomorrow, one student at a time."
-                    </p>
+                    <motion.span
+                        variants={lineVariants}
+                        className="inline-flex font-mono text-accent text-sm tracking-widest border border-accent/40 px-3 py-1 rounded-sm mb-8"
+                    >
+                        EST. {associationInfo.founded} · BATCH 2021-2025
+                    </motion.span>
 
-                    <div className="flex flex-wrap gap-6 justify-center">
-                        <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="btn btn-primary"
-                        >
+                    <motion.span variants={lineVariants} className="amber-line mx-auto mb-8" />
+
+                    <motion.h1 variants={lineVariants} className="mb-5">
+                        <span className="block text-foreground">NCSE</span>
+                        <span className="block text-[0.46em] md:text-[0.42em] leading-tight text-foreground mt-2">
+                            {associationInfo.fullName}
+                        </span>
+                        <span className="block text-[0.28em] md:text-[0.24em] leading-relaxed text-foreground-muted font-medium mt-3">
+                            {associationInfo.department}
+                        </span>
+                    </motion.h1>
+
+                    <motion.p
+                        variants={lineVariants}
+                        className="max-w-2xl mx-auto mb-10 text-xl md:text-2xl text-foreground"
+                    >
+                        {associationInfo.tagline}
+                    </motion.p>
+
+                    <motion.div variants={lineVariants} className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <Link to="/events" className="btn btn-primary accent-glow">
                             Explore Events
-                        </motion.button>
-                        <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="btn btn-secondary"
-                        >
-                            Learn More
-                        </motion.button>
-                    </div>
+                            <ArrowRight size={18} />
+                        </Link>
+                        <Link to="/board" className="btn btn-secondary">
+                            Meet the Board
+                        </Link>
+                    </motion.div>
+
+                    <motion.div
+                        variants={lineVariants}
+                        className="mt-10 flex flex-wrap items-center justify-center gap-3 font-mono text-sm text-foreground-muted"
+                    >
+                        <span><span className="text-accent">{associationInfo.memberCount}</span> Members</span>
+                        <span className="text-accent">·</span>
+                        <span><span className="text-accent">{associationInfo.eventCount}</span> Events</span>
+                        <span className="text-accent">·</span>
+                        <span>Founded <span className="text-accent">{associationInfo.founded}</span></span>
+                    </motion.div>
                 </motion.div>
             </div>
-
-            <style>{`
-        .bg-gradient-radial-at-tl {
-          background-image: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.05) 0px, transparent 50%);
-        }
-        .bg-gradient-radial-at-br {
-          background-image: radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.05) 0px, transparent 50%);
-        }
-      `}</style>
         </section>
     );
 };

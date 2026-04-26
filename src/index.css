@@ -1,68 +1,83 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #3b82f6;
-  --color-primary-hover: #2563eb;
-  --color-secondary: #8b5cf6;
-  --color-accent: #f59e0b;
-  --color-background: #020617;
-  --color-foreground: #f8fafc;
-  --color-card: #0f172a;
-  --color-border: #1e293b;
+  --color-background: #0A0F1E;
+  --color-surface: #0D1B3E;
+  --color-surface-2: #112050;
+  --color-border: #1A3A6B;
+  --color-border-light: #2A5080;
+  --color-accent: #D4A017;
+  --color-accent-hover: #E8B820;
+  --color-accent-muted: #7A5B0A;
+  --color-foreground: #F5ECD0;
+  --color-foreground-muted: #A89F8C;
+  --color-foreground-dim: #6B6358;
+  --color-navy: #0A0F1E;
+  --color-navy-mid: #0D1B3E;
+  --color-navy-bright: #1A3A6B;
 }
 
 @layer base {
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+    background-color: #0A0F1E;
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%231A3A6B' stroke-width='0.4' opacity='0.35'%3E%3Cpath d='M 40 0 L 0 0 0 40'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 40px 40px;
     overflow-x: hidden;
   }
 
   h1 {
-    @apply text-5xl md:text-7xl font-extrabold leading-tight tracking-tight;
+    @apply text-foreground font-bold leading-tight tracking-tight;
+    font-size: clamp(2.5rem, 6vw, 5rem);
   }
 
   h2 {
-    @apply text-3xl md:text-5xl font-bold tracking-tight mb-6;
+    @apply text-3xl md:text-5xl font-bold tracking-tight text-foreground;
   }
 
   p {
-    @apply text-slate-400 text-lg md:text-xl;
+    @apply text-foreground-muted text-lg leading-relaxed;
+  }
+
+  a {
+    @apply transition-colors;
   }
 }
 
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center px-8 py-3 font-semibold rounded-full transition-all duration-300;
+    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 no-underline;
+    border-radius: 4px;
+    padding: 0.6rem 1.5rem;
+    font-family: 'IBM Plex Mono', monospace;
   }
 
   .btn-primary {
-    @apply bg-gradient-to-br from-primary to-secondary text-white shadow-lg hover:shadow-blue-500/50 hover:-translate-y-0.5;
+    @apply bg-accent text-background hover:bg-accent-hover;
   }
 
   .btn-secondary {
-    @apply bg-transparent border border-border text-white hover:bg-white/5 hover:-translate-y-0.5;
+    @apply bg-transparent text-accent border border-accent hover:bg-accent/10;
   }
 
   .glass {
-    @apply bg-card/70 backdrop-blur-xl border border-white/10;
-  }
-
-  .gradient-text {
-    @apply bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent inline-block;
+    background: rgba(13, 27, 62, 0.75);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(26, 58, 107, 0.6);
   }
 
   .nav-link {
-    @apply text-slate-400 font-medium transition-colors hover:text-white relative;
+    @apply text-foreground-muted font-medium transition-colors hover:text-accent relative no-underline;
   }
 
   .nav-link.active {
-    @apply text-white;
+    @apply text-accent;
   }
 
   .nav-link::after {
     content: '';
-    @apply absolute w-0 h-0.5 bottom-[-4px] left-0 bg-primary transition-all duration-300;
+    @apply absolute w-0 h-0.5 bottom-[-6px] left-0 bg-accent transition-all duration-300;
   }
 
   .nav-link:hover::after,
@@ -75,6 +90,33 @@
   }
 
   section {
-    @apply py-24 md:py-32;
+    @apply py-20 md:py-28;
+  }
+
+  .amber-line {
+    @apply block h-0.5 w-16 bg-accent;
+  }
+
+  .grid-bg {
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%231A3A6B' stroke-width='0.4' opacity='0.35'%3E%3Cpath d='M 40 0 L 0 0 0 40'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 40px 40px;
+  }
+
+  .accent-glow {
+    box-shadow: 0 0 16px rgba(212, 160, 23, 0.25);
+  }
+}
+
+@layer utilities {
+  .font-mono {
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 }

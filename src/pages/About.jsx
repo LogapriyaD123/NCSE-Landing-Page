@@ -1,12 +1,253 @@
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { useInView } from 'react-intersection-observer';
+import { Award, Lightbulb, Rocket, Target } from 'lucide-react';
+import { associationInfo } from '../data';
+
+const stats = [
+    { label: 'Life Members', value: 200, suffix: '+' },
+    { label: 'Events Hosted', value: 12, suffix: '+' },
+    { label: 'Past Batches', value: 4, suffix: '' },
+    { label: 'Years Active', value: 3, suffix: '+' },
+];
+
+const values = [
+    {
+        number: '01',
+        label: 'Build',
+        body: 'Ship practical work, learn from the process, and make technical ambition visible.',
+    },
+    {
+        number: '02',
+        label: 'Learn',
+        body: 'Turn curiosity into repeatable engineering habits through workshops and peer review.',
+    },
+    {
+        number: '03',
+        label: 'Lead',
+        body: 'Create space for students to organize, mentor, present, and make decisions.',
+    },
+    {
+        number: '04',
+        label: 'Share',
+        body: 'Keep knowledge moving through talks, documentation, demos, and collaborative events.',
+    },
+];
+
+const timeline = [
+    {
+        year: "2021",
+        title: "The Inception",
+        description: "NCSE was founded by a small group of seniors who wanted a dedicated platform for computing students.",
+    },
+    {
+        year: "2022",
+        title: "First Hackathon",
+        description: "Hosted CodeForge, a build-focused competition that brought students into practical team-based problem solving.",
+    },
+    {
+        year: "2023",
+        title: "Community Expansion",
+        description: "Expanded into specialized sessions across software, systems, emerging technology, and mentorship.",
+    },
+    {
+        year: "2024",
+        title: "National Recognition",
+        description: "Built a stronger annual calendar with ceremonies, summits, workshops, and student-led technical initiatives.",
+    }
+];
+
+const CountUpNumber = ({ value, suffix, active }) => {
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+        if (!active) return;
+
+        const duration = 1200;
+        const frames = 60;
+        let frame = 0;
+        const interval = setInterval(() => {
+            frame += 1;
+            const progress = frame / frames;
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setCount(Math.round(value * eased));
+
+            if (frame >= frames) {
+                clearInterval(interval);
+                setCount(value);
+            }
+        }, duration / frames);
+
+        return () => clearInterval(interval);
+    }, [active, value]);
+
+    return <>{count}{suffix}</>;
+};
+
+const StatCard = ({ label, value, suffix }) => {
+    const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.35 });
+
+    return (
+        <motion.div
+            ref={ref}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="glass p-6 md:p-8 rounded text-center border-l-2 border-l-accent"
+        >
+            <h3 className="font-mono text-4xl md:text-5xl font-semibold text-accent mb-2">
+                <CountUpNumber value={value} suffix={suffix} active={inView} />
+            </h3>
+            <p className="text-foreground-muted font-medium">{label}</p>
+        </motion.div>
+    );
+};
+
+const TimelineNode = ({ year, title, description, index }) => {
+    const isEven = index % 2 === 0;
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, x: isEven ? -36 : 36 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5 }}
+            className="relative md:grid md:grid-cols-2 md:gap-12 mb-10"
+        >
+            <div className={isEven ? 'md:col-start-1' : 'md:col-start-2'}>
+                <div className="glass rounded p-6 border-l-2 border-l-accent relative">
+                    <span className="absolute top-5 right-5 font-mono text-accent text-sm">{year}</span>
+                    <h4 className="text-foreground text-xl font-semibold mb-3 pr-16">{title}</h4>
+                    <p className="text-foreground-muted text-sm">{description}</p>
+                </div>
+            </div>
+            <span className="absolute left-[-25px] md:left-1/2 md:-translate-x-1/2 top-6 w-2.5 h-2.5 bg-accent rounded-full shadow-[0_0_16px_rgba(212,160,23,0.35)]" />
+        </motion.div>
+    );
+};
+
 const About = () => {
     return (
-        <div className="container pt-40 min-h-[80vh] text-center">
-            <h1 className="gradient-text">About NCSE</h1>
-            <p className="mt-8 max-w-3xl mx-auto">
-                NCSE is the premier student association dedicated to fostering technical skills and innovation in the computing field.
-                We provide a platform for students to learn, build, and lead.
-            </p>
+        <div className="bg-background min-h-screen pb-20 pt-32 overflow-hidden relative grid-bg">
+            <div className="container relative z-10 mb-24">
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-surface/70 border border-border rounded p-8 md:p-12"
+                >
+                    <span className="amber-line mb-7" />
+                    <p className="font-mono text-accent text-sm tracking-widest mb-4">ABOUT THE CHAPTER</p>
+                    <h1 className="mb-5">About NCSE</h1>
+                    <p className="text-lg md:text-xl text-foreground-muted max-w-3xl">
+                        {associationInfo.tagline} We are a student-led technical association built around practical learning, shared leadership, and real project culture.
+                    </p>
+                </motion.div>
+            </div>
+
+            <div className="container relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6 mb-24">
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    whileHover={{ y: -4 }}
+                    className="glass p-8 md:p-10 rounded border-l-2 border-l-accent"
+                >
+                    <Target className="text-accent mb-6" size={42} />
+                    <h2 className="text-3xl font-bold mb-4">Our Mission</h2>
+                    <p>{associationInfo.mission}</p>
+                </motion.div>
+
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.08 }}
+                    whileHover={{ y: -4 }}
+                    className="glass p-8 md:p-10 rounded border-l-2 border-l-accent"
+                >
+                    <Lightbulb className="text-accent mb-6" size={42} />
+                    <h2 className="text-3xl font-bold mb-4">Our Vision</h2>
+                    <p>
+                        To build an ecosystem where computing students bridge academic theory and industry practice through guided, hands-on work.
+                    </p>
+                </motion.div>
+            </div>
+
+            <div className="container relative z-10 grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-24">
+                {stats.map((stat) => (
+                    <StatCard key={stat.label} {...stat} />
+                ))}
+            </div>
+
+            <div className="container relative z-10 mb-24">
+                <motion.div
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-80px' }}
+                    className="mb-12"
+                >
+                    <div className="flex items-center gap-5 mb-4">
+                        <span className="amber-line" />
+                        <h2 className="mb-0">Values</h2>
+                    </div>
+                    <p className="max-w-2xl">The operating principles behind how the chapter learns, teaches, and organizes.</p>
+                </motion.div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                    {values.map((value, index) => (
+                        <motion.article
+                            key={value.label}
+                            initial={{ opacity: 0, y: 24 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: '-80px' }}
+                            transition={{ delay: index * 0.06 }}
+                            whileHover={{ y: -4 }}
+                            className="glass rounded p-6"
+                        >
+                            <p className="font-mono text-4xl text-accent mb-5">{value.number}</p>
+                            <h3 className="text-2xl text-foreground font-bold mb-3">{value.label}</h3>
+                            <p className="text-base">{value.body}</p>
+                        </motion.article>
+                    ))}
+                </div>
+            </div>
+
+            <div className="container relative z-10 mb-24">
+                <div className="text-center mb-16">
+                    <span className="amber-line mx-auto mb-5" />
+                    <h2>Our Story</h2>
+                </div>
+                <div className="relative max-w-5xl mx-auto pl-8 md:pl-0">
+                    <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 top-2 bottom-2 w-0.5 bg-accent/70 rounded-full" />
+                    {timeline.map((item, i) => (
+                        <TimelineNode key={item.year} index={i} {...item} />
+                    ))}
+                </div>
+            </div>
+
+            <div className="container relative z-10">
+                <motion.div
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="bg-surface border border-border rounded p-10 md:p-14 text-center grid-bg relative overflow-hidden"
+                >
+                    <Rocket size={110} className="absolute right-8 top-8 text-accent/10 pointer-events-none" />
+                    <Award size={90} className="absolute left-8 bottom-8 text-accent/10 pointer-events-none" />
+                    <span className="amber-line mx-auto mb-7" />
+                    <h2 className="text-3xl md:text-4xl font-bold mb-5 relative z-10">Want to be part of NCSE?</h2>
+                    <p className="mb-8 max-w-2xl mx-auto relative z-10">
+                        Join our events, meet student builders, and help shape the technical culture on campus.
+                    </p>
+                    <div className="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
+                        <Link to="/events" className="btn btn-primary accent-glow">View Events</Link>
+                        <Link to="/board" className="btn btn-secondary">Meet the Board</Link>
+                    </div>
+                </motion.div>
+            </div>
         </div>
     );
 };
+
 export default About;

@@ -1,48 +1,67 @@
 import { Github, Twitter, Linkedin, Mail } from 'lucide-react';
+import { associationInfo } from '../data';
+import { Link } from 'react-router-dom';
+
+const socialLinks = [
+    { key: 'github', label: 'GitHub', icon: Github, href: associationInfo.socials.github },
+    { key: 'twitter', label: 'Twitter', icon: Twitter, href: associationInfo.socials.twitter },
+    { key: 'linkedin', label: 'LinkedIn', icon: Linkedin, href: associationInfo.socials.linkedin },
+    { key: 'email', label: 'Email', icon: Mail, href: `mailto:${associationInfo.socials.email}` },
+];
 
 const Footer = () => {
     return (
-        <footer className="glass border-t border-white/10 py-16 md:py-24">
+        <footer className="bg-[#080D18] border-t border-border pt-16 pb-8 md:pt-20 md:pb-10 mt-auto">
             <div className="container">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 mb-14">
                     <div>
-                        <h3 className="gradient-text text-2xl font-bold mb-6">NCSE</h3>
-                        <p className="text-base text-slate-400">
-                            Empowering the next generation of computing students through technical excellence and innovation.
+                        <h3 className="font-mono text-accent text-3xl font-bold mb-5 tracking-widest">{associationInfo.name}</h3>
+                        <p className="text-base text-foreground-muted leading-relaxed mb-5">
+                            {associationInfo.mission}
                         </p>
+                        <p className="font-mono text-sm text-foreground-dim">{associationInfo.department}</p>
+                        <p className="font-mono text-sm text-foreground-dim mt-2">{associationInfo.socials.email}</p>
                     </div>
 
                     <div>
-                        <h4 className="text-white font-semibold mb-6">Quick Links</h4>
-                        <ul className="list-none flex flex-col gap-3">
-                            <li><a href="/" className="text-slate-400 no-underline hover:text-white transition-colors">Home</a></li>
-                            <li><a href="/events" className="text-slate-400 no-underline hover:text-white transition-colors">Events</a></li>
-                            <li><a href="/about" className="text-slate-400 no-underline hover:text-white transition-colors">About</a></li>
-                            <li><a href="/contact" className="text-slate-400 no-underline hover:text-white transition-colors">Contact</a></li>
+                        <h4 className="text-foreground font-mono uppercase tracking-widest mb-6 text-sm">Quick Links</h4>
+                        <ul className="list-none flex flex-col gap-4 p-0 m-0">
+                            <li><Link to="/" className="text-foreground-muted no-underline hover:text-accent">Home</Link></li>
+                            <li><Link to="/events" className="text-foreground-muted no-underline hover:text-accent">Events</Link></li>
+                            <li><Link to="/board" className="text-foreground-muted no-underline hover:text-accent">Board</Link></li>
+                            <li><Link to="/about" className="text-foreground-muted no-underline hover:text-accent">About</Link></li>
+                            <li><Link to="/contact" className="text-foreground-muted no-underline hover:text-accent">Contact</Link></li>
                         </ul>
                     </div>
 
                     <div>
-                        <h4 className="text-white font-semibold mb-6">Connect With Us</h4>
+                        <h4 className="text-foreground font-mono uppercase tracking-widest mb-6 text-sm">Connect</h4>
+                        <p className="text-foreground-muted text-base mb-6">
+                            Follow updates, projects, workshops, and chapter announcements.
+                        </p>
                         <div className="flex gap-4">
-                            <a href="#" className="w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-slate-400 transition-all hover:text-white hover:border-primary hover:bg-blue-500/10 hover:-translate-y-1">
-                                <Github size={20} />
-                            </a>
-                            <a href="#" className="w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-slate-400 transition-all hover:text-white hover:border-primary hover:bg-blue-500/10 hover:-translate-y-1">
-                                <Twitter size={20} />
-                            </a>
-                            <a href="#" className="w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-slate-400 transition-all hover:text-white hover:border-primary hover:bg-blue-500/10 hover:-translate-y-1">
-                                <Linkedin size={20} />
-                            </a>
-                            <a href="#" className="w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-slate-400 transition-all hover:text-white hover:border-primary hover:bg-blue-500/10 hover:-translate-y-1">
-                                <Mail size={20} />
-                            </a>
+                            {socialLinks.filter((link) => link.href).map(({ key, label, icon: Icon, href }) => (
+                                <a
+                                    key={key}
+                                    href={href}
+                                    aria-label={label}
+                                    target={key === 'email' ? undefined : '_blank'}
+                                    rel={key === 'email' ? undefined : 'noreferrer'}
+                                    className="w-11 h-11 rounded border border-border bg-surface/60 flex items-center justify-center text-foreground-dim transition-all hover:text-accent hover:border-accent hover:-translate-y-1"
+                                >
+                                    <Icon size={19} />
+                                </a>
+                            ))}
                         </div>
                     </div>
                 </div>
 
-                <div className="border-t border-white/10 pt-8 text-center text-slate-500 text-sm">
-                    <p>&copy; {new Date().getFullYear()} NCSE. All rights reserved.</p>
+                <div className="border-t border-border/70 pt-7 text-center font-mono text-foreground-dim text-sm">
+                    <span>&copy; {new Date().getFullYear()} {associationInfo.name}</span>
+                    <span className="text-accent mx-2">·</span>
+                    <span>{associationInfo.college}</span>
+                    <span className="text-accent mx-2">·</span>
+                    <span>All rights reserved</span>
                 </div>
             </div>
         </footer>
