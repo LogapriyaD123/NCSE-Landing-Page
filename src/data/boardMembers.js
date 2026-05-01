@@ -178,8 +178,10 @@ export const boardMembers = [
           role: "President",
           team: "Core Board",
           bio: "Leads the NCSE association and oversees student activities.",
-          photo: "/images/member19.png",
-          socials: {},
+          photo: "/images/board/2023-2024/image22.jpeg",
+          socials: {linkedin:'/images/member19.png',
+            
+          },
         },
         {
           id: "mem-020",
@@ -197,7 +199,7 @@ export const boardMembers = [
           team: "Administration",
           bio: "Handles records, communication, and official documentation.",
           photo: "/images/member21.png",
-          socials: {},
+          socials: {linkedin:'https://www.linkedin.com/in/anand-hariharan-3461862b3/'},
         },
         {
           id: "mem-022",
